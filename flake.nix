@@ -5,7 +5,7 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
 
     emacs-src = {
-      url = "github:emacs-mirror/emacs";
+      url = "github:emacs-mirror/emacs/emacs-28";
       flake = false;
     };
 
@@ -69,15 +69,12 @@
 
         emacs = (prev.emacs.override { srcRepo = true; nativeComp = true; withXwidgets = true; }).overrideAttrs (
           o: rec {
-            version = "29.0.50";
+            version = "28.0.90";
             src = emacs-src;
 
             buildInputs = o.buildInputs ++ [ prev.darwin.apple_sdk.frameworks.WebKit ];
 
-            patches = [
-              ./patches/fix-window-role.patch
-              ./patches/no-titlebar.patch
-            ];
+            patches = [];
 
             postPatch = o.postPatch + ''
               substituteInPlace lisp/loadup.el \
